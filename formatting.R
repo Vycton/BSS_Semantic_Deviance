@@ -97,6 +97,8 @@ results <- transform(results,
                      education = factor(education),
                      time = as.numeric(time))
 
+results$avg_pairs <- (results$t1_pairs + results$t2_pairs + results$t3_pairs)/3
+
 #Save file
 save(results, file="deviance_results.rData")
 #write.csv(results, "deviance_results.csv")
