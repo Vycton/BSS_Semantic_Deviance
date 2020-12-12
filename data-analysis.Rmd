@@ -1,0 +1,25 @@
+---
+title: "Data analysis"
+output: html_document
+---
+
+## Load data
+```{r}
+load("deviance_results.rData") 
+head(results)
+```
+
+## Split data by condition
+```{r}
+results_by_condition <- split(results, f = results$deviance) 
+```
+
+## Draw sketch boxplot for t1 phrases
+```{r}
+boxplot(results_by_condition$high$t1_pairs, results_by_condition$low$t1_pairs, 
+        names = c("High deviance", "Low deviance"))
+
+mtext("Recalled word pairs", side = 2, line = 2)
+mtext("Condition", side = 1, line = 7)
+mtext("", side = 3, line = 2)
+```
