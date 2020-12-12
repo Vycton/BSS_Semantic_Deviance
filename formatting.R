@@ -4,9 +4,11 @@ require(dplyr)
 require(chron)
 
 #Setup dataframe
-results <- data.frame(matrix(nrow = 12, ncol = 12))
+results <- data.frame(matrix(nrow = 12, ncol = 18))
 names(results) <- c("t1_pairs", "t2_pairs", "t3_pairs",
                     "t1_single", "t2_single", "t3_single",
+                    "t1_err_pairs", "t2_err_pairs", "t3_err_pairs",
+                    "t1_err_single", "t2_err_single", "t3_err_single",
                     "deviance", "age", "gender", "native", "education", "time")
 
 folder <- paste("Data-anonymous", .Platform$file.sep, sep = "")
@@ -46,10 +48,20 @@ for (i in 1:12){
   #Initialize vectors that will hold the number of recalled phrases/words per trial
   rec_phrases <- numeric(3)
   rec_words <- numeric(3)
+  err_phrases <- numeric(3)
+  err_words <- numeric(3)
+  
   #Count number of recalled phrases
   for(j in 1:3){
-    rec_phrases[j] <- sum(unique(recalled_phrases[[j]]) %in% an_phrases)
-    rec_words[j] <- sum(unique(recalled_words[[j]]) %in% an_words)
+    matched_pairs <- intersect(unique(recalled_phrases[[j]]), an_phrases)
+    matched_words <- intersect(unique(recalled_words[[j]]), an_words)
+
+    rec_phrases[j] <- length(matched_pairs)
+    rec_words[j] <- length(matched_words)
+    
+    # Todo: recalled single words should probably not be treated as word pairs
+    err_phrases[j] <- length(recalled_phrases[[j]]) - length(matched_pairs)
+    err_words[j] <- length(recalled_words[[j]]) - length(matched_words)
   }
   
   # Get time in hours after 9AM
@@ -59,7 +71,7 @@ for (i in 1:12){
   
   
   #Insert number of recalled phrases along with other data
-  results[i,] <-  c(rec_phrases, rec_words, phrases$deviance[1], data$p_age[1],
+  results[i,] <-  c(rec_phrases, rec_words, err_phrases, err_words, phrases$deviance[1], data$p_age[1],
                     data$p_gender[1], data$p_language[1], data$p_education[1],
                     time)
 }
@@ -72,6 +84,12 @@ results <- transform(results,
                      t1_single = as.numeric(t1_single),
                      t2_single = as.numeric(t2_single),
                      t3_single = as.numeric(t3_single),
+                     t1_err_pairs = as.numeric(t1_err_pairs),
+                     t2_err_pairs = as.numeric(t2_err_pairs),
+                     t3_err_pairs = as.numeric(t3_err_pairs),
+                     t1_err_single = as.numeric(t1_err_single),
+                     t2_err_single = as.numeric(t2_err_single),
+                     t3_err_single = as.numeric(t3_err_single),
                      deviance = factor(deviance),
                      age = as.numeric(age),
                      gender = factor(gender),
