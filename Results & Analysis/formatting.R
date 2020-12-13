@@ -11,7 +11,7 @@ names(results) <- c("t1_pairs", "t2_pairs", "t3_pairs",
                     "t1_err_single", "t2_err_single", "t3_err_single",
                     "deviance", "age", "gender", "native", "education", "time")
 
-folder <- paste("Data-anonymous", .Platform$file.sep, sep = "")
+folder <- paste("Results & Analysis", .Platform$file.sep, "Data-anonymous", .Platform$file.sep, sep = "")
 
 #For each participant
 for (i in 1:12){
@@ -98,6 +98,7 @@ results <- transform(results,
                      time = as.numeric(time))
 
 results$avg_pairs <- (results$t1_pairs + results$t2_pairs + results$t3_pairs)/3
+results$avg_single <- (results$t1_single + results$t2_single + results$t3_single)/3
 
 #Save file
 save(results, file="deviance_results.rData")
