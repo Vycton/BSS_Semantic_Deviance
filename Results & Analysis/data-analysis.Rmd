@@ -3,6 +3,10 @@ title: "Data analysis"
 output: html_document
 ---
 
+```{r}
+require(ggplot2)
+```
+
 ## Load data
 ```{r}
 load("deviance_results.rData") 
@@ -23,3 +27,62 @@ mtext("Recalled word pairs", side = 2, line = 2)
 mtext("Condition", side = 1, line = 7)
 mtext("", side = 3, line = 2)
 ```
+## Test distribution 
+```{r}
+print_full_qq_plot <- function(data, title) {
+  qqnorm(data, main=title)
+  qqline(data)
+}
+print_full_qq_plot(results_by_condition$low$t1_pairs, "T1 pairs low deviance")
+```
+
+## Paper graphs #1
+# AVG number of recalled word pairs vs semantic deviance
+Average is taken out of 3 trials
+```{r}
+ggplot(results, aes(x=deviance, y=avg_pairs)) + 
+  theme_gray() +
+  theme(legend.position = "none", text = element_text(size = 17)) +
+  geom_boxplot() + 
+  labs(x = "\nSemantic Deviance", y = "Average number of recalled pairs\n") + 
+  scale_x_discrete(labels=c("high" = "High", "low" = "Low"))
+```
+
+# AVG number of recalled word pairs vs trials
+```{r}
+ggplot(df, aes(x=tr, y=rec)) + geom_boxplot(aes(fill=`Semantic Deviance`)) + labs(x = "\nTrial", y = "Number of recalled word pairs\n") + 
+  theme(
+    legend.position = c(.95, .05),
+    legend.justification = c("right", "bottom"),
+    legend.box.just = "right",
+    legend.margin = margin(6, 6, 6, 6),
+    text = element_text(size = 17)
+) 
+```
+
+## Paper graphs #3
+# AVG number of recalled word pairs vs gender
+```{r}
+ggplot(results, aes(x=gender, y=avg_pairs)) + 
+  geom_boxplot() + 
+  theme_gray() +
+  theme(legend.position = "none", text = element_text(size = 17)) +
+  theme(legend.position = "none") + 
+  labs(x = "\nGender", y = "Average number of recalled pairs\n")
+
+```
+
+
+## Paper graphs #5
+# AVG number of recalled word pairs vs proficiency
+```{r}
+
+ggplot(results, aes(x=native, y=avg_pairs)) + 
+  geom_boxplot() + 
+  theme_gray() +
+  theme(legend.position = "none", text = element_text(size = 17)) +
+  labs(x = "\nNative speaker", y = "Average number of recalled pairs\n") 
+```
+
+```
+
