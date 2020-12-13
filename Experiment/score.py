@@ -11,7 +11,11 @@ with open('annotations.csv', newline='') as csvfile:
         an2 = row[6]
 
         if not an1 in scores:
-            scores[an1] = [0,1]
+            scores[an1] = [0,1] 
+            # Should actually be [0,0] 
+            # This causes all scores to be slightly lower than they should be, 
+            # but it should not matter that much for classifying low and 
+            # high deviance.
         if not an2 in scores:
             scores[an2] = [0,1]
 
