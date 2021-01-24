@@ -22,5 +22,6 @@ Note that the produced pools are not the same each time the script is run.
 experiment.osexp is the Open Sesame experiment that was used to conduct the study
 
 Distributions for the generated data set used in the study:
+
 ![Screenshot](https://raw.githubusercontent.com/Vycton/BSS_Semantic_Deviance/master/Experiment/dataset.png)
 
